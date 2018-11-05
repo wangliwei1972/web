@@ -1,0 +1,211 @@
+<html>
+<head>
+    <title>项目名称-单位</title>
+    <meta charset="utf-8">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static "temn.css" %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static "loginDialog.css" %}"/>
+    <script type="text/javascript" src="{% static "jquery-1.8.3.min.js" %}"></script>
+
+</head>
+<body>
+ <div id="LoginBox" styel="filter:alpha(opacity=90);" opacity:0.9;>
+        {% csrf_token %}
+        <div class="row1">
+            登录后继续操作<a href="javascript:void(0)" title="关闭窗口" class="close_btn" id="closeBtn">×</a>
+        </div>
+        <div class="row">
+            用户名: <span class="inputBox">
+            <input type="text" id="txtName" name="account" placeholder="账号/邮箱" />
+            </span><a href="javascript:void(0)" title="提示" class="warning" id="warn">*</a>
+        </div>
+        <div class="row">
+            密&nbsp;&nbsp;&nbsp;&nbsp;码: <span class="inputBox">
+            <input type="password" id="txtPwd" name="password" placeholder="密码" />
+            </span><a href="javascript:void(0)" title="提示" class="warning" id="warn2">*</a>
+        </div>
+        <div class="row">
+            <a href="#" id="loginbtn">登录</a>
+        </div>
+</div>
+  {% if request.user.is_authenticated %}
+      <a style="color: #0ff; margin-left:5%;" >用户：</a>
+      <a id ="usenam" style=" color:#0ff;" >{{  request.user }}</a>
+      <a href="/logout" style="margin-left: 60%;color:#0ff ;align:online;">退出</a>
+    {% else %}
+    <a style="color:#0ff; margin-left:5%;">用户：</a>
+    <a id="usenam" href="/register" style="color:#0ff;" >注册</a>
+    <a href="#" id="ample" style="margin-left: 60%;color:#0ff;">登录</a>
+
+  {% endif %}
+
+
+
+<script type="text/javascript">
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+
+
+
+	$(function ($) {
+		//弹出登录
+		$("#ample").hover(function () {
+			$(this).stop().animate({
+				opacity: '1'
+			}, 600);
+		}, function () {
+			$(this).stop().animate({
+				opacity: '0.6'
+			}, 1000);
+		}).on('click', function () {
+			$("body").append("<div id='mask'></div>");
+			$("#mask").addClass("mask").fadeIn("slow");
+			$("#LoginBox").fadeIn("slow");
+		});
+		//
+		//按钮的透明度
+		$("#loginbtn").hover(function () {
+			$(this).stop().animate({
+				opacity: '1'
+			}, 600);
+		}, function () {
+			$(this).stop().animate({
+				opacity: '0.8'
+			}, 1000);
+		});
+		//文本框不允许为空---按钮触发
+		$("#loginbtn").on('click', function () {
+			var txtName = $("#txtName").val();
+			var txtPwd = $("#txtPwd").val();
+			if (txtName == "" || txtName == undefined || txtName == null) {
+				if (txtPwd == "" || txtPwd == undefined || txtPwd == null) {
+					$(".warning").css({ display: 'block' });
+				}
+				else {
+					$("#warn").css({ display: 'block' });
+					$("#warn2").css({ display: 'none' });
+				}
+			}
+			else {
+				if (txtPwd == "" || txtPwd == undefined || txtPwd == null) {
+					$("#warn").css({ display: 'none' });
+					$("#warn2").css({ display: 'block' });
+				}
+				else {
+					$(".warning").css({ display: 'none' });
+					$.post("/login","csrfmiddlewaretoken="+getCookie('csrftoken')+ "&account="+txtName+"&password="+txtPwd,function (){
+					    $("#closeBtn").click();
+					    $("#usenam").attr("href","#");
+					$("#usenam").text = txtName;
+					window.location.reload();
+					});
+
+
+
+				}
+			}
+		});
+		//文本框不允许为空---单个文本触发
+		$("#txtName").on('blur', function () {
+			var txtName = $("#txtName").val();
+			if (txtName == "" || txtName == undefined || txtName == null) {
+				$("#warn").css({ display: 'block' });
+			}
+			else {
+				$("#warn").css({ display: 'none' });
+			}
+		});
+		$("#txtName").on('focus', function () {
+			$("#warn").css({ display: 'none' });
+		});
+		//
+		$("#txtPwd").on('blur', function () {
+			var txtName = $("#txtPwd").val();
+
+			if (txtName == "" || txtName == undefined || txtName == null) {
+				$("#warn2").css({ display: 'block' });
+			}
+			else {
+				$("#warn2").css({ display: 'none' });
+			}
+		});
+		$("#txtPwd").on('focus', function () {
+			$("#warn2").css({ display: 'none' });
+			$("#txtPwd").css({type:'password'});
+		});
+		//关闭
+		$(".close_btn").hover(function () { $(this).css({ color: 'black' }) }, function () { $(this).css({ color: '#999' }) }).on('click', function () {
+			$("#LoginBox").fadeOut("fast");
+			$("#mask").css({ display: 'none' });
+		});
+	});
+	</script>
+
+
+
+
+
+
+    <!-- -------菜单html代码---------begin------- -->
+    <div class="menuDiv">
+        <ul>
+            <li>
+                <a href="#">菜单一</a>
+                <ul>
+                    <li><a href="#">二级菜单</a></li>
+                    <li><a href="#">二级菜单</a></li>
+                    <li><a href="#">二级菜单</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">菜单二</a>
+                <ul>
+                    <li><a href="#">二级菜单</a></li>
+                    <li><a href="#">二级菜单</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">菜单三</a>
+                <ul>
+                    <li><a href="#">二级菜单</a></li>
+                    <li><a href="#">二级菜单</a></li>
+                    <li><a href="#">二级菜单</a></li>
+                    <li><a href="#">二级菜单</a></li>
+                    <li><a href="#">二级菜单</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">菜单四</a>
+            </li>
+            <li>
+                <a href="#">菜单五</a>
+                <ul>
+                    <li><a href="#">二级菜单</a></li>
+                    <li><a href="#">二级菜单</a></li>
+                    <li><a href="#">二级菜单</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <!-- -------菜单html代码---------end------- -->
+
+ <hr align="center" width="80%" size="2" style="margin-left:10%;margin-bottom: 20px; text-align: center;"/>
+{% block context %}
+      添加内容
+{% endblock context %}
+
+</body>
+</html>

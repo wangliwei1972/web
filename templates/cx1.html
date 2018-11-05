@@ -1,0 +1,25 @@
+{%   extends "base.html" %}
+{%   block context %}
+<h1>Hello World!</h1>
+<table border="2" bgcolor="#faebd7" align="center" width="100%">
+    {% for n in ls %}
+     <tr>
+        <td>
+            {{ n.dz }}
+        </td>
+        <td>
+            {{ n.mp }}
+        </td>
+            <td>
+            {{ n.jzmj }}
+        </td>
+        <td>
+            {{ n.xszt }}
+        </td>
+        <td>
+            {{ n.xgrq|date:"Y-m-d" }}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock context %}

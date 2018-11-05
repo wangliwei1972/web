@@ -1,0 +1,72 @@
+{%   extends "base.html" %}
+{%   block context %}
+    <div style="border: 0px red solid; margin: 0 auto; padding: 0; height: 80%; width: 80%; align:center;">
+		<div id="left_top" style="float: left;width: 38%;" class="layout">
+			<div id="Applet1"
+				style="border: 0px yellow solid; margin: 2px; padding: 60px 0px 0px 0px; height: 97%;">
+
+                <form action="/sf" method="post" >
+        {% csrf_token %}
+        <input type="text" align="right"    style="background-color: rgba(255,255,255,0);border:0;font-size: 22px;height: 28px;vertical-align: middle;text-align: right;" value="请输入查询地址：" readonly>
+        <input type="text" name="tj" style="height: 25px;vertical-align:middle;">
+        <input type="submit" style="font-size: 19px;vertical-align: middle;" value="提交">
+</form>
+
+             </div>
+
+		</div>
+        <div style="float: left;width: 2%;" class="layout">
+             <hr style="width:2px;height: 95%"></hr>
+        </div>
+		<div id="right_top" style="float: left;width: 60%;" class="layout" >
+			<div id="Applet2"
+				style="border: 0px yellow solid; margin: 2px; padding: 60px 0px 0px 0px; height: 97%;">
+
+                <table border="1"  bgcolor="rgba(255,255,255,0)"  align="center" width="80%" style="background-color: rgba(255,255,255,0);">
+<caption ><font size="6" color="#0ff">查  询  内  容</caption>
+    <tr >
+        <th align="center"><font face="Microsoft YaHei" size="4" color="#0ff">编号</th>
+        <th align="center"><font face="Microsoft YaHei" size="4" color="#0ff">地址</th>
+        <th align="center"><font face="Microsoft YaHei" size="4" color="#0ff">门牌</th>
+        <th align="center"><font face="Microsoft YaHei" size="4" color="#0ff">建筑面积</th>
+        <th align="center"><font face="Microsoft YaHei" size="4" color="#0ff">销售状态</th>
+        <th align="center"><font face="Microsoft YaHei" size="4" color="#0ff">修改日期</th>
+    </tr>
+    {% for n in ls %}
+
+         <tr>
+        <td align="center"><font face="FangSong" size="4" color="#0ff">
+            {{  forloop.counter }}
+        </td>
+        <td align="center"><font face="FangSong" size="4" color="#0ff">
+            {{  n.dz  }}
+        </td>
+        <td align="center"><font face="FangSong" size="4" color="#0ff">
+            {{ n.mp }}
+        </td>
+            <td align="center"><font face="FangSong" size="4" color="#0ff">
+            {{ n.jzmj }}
+        </td>
+        <td align="center"><font face="FangSong" size="4" color="#0ff">
+            {{ n.xszt }}
+        </td>
+        <td align="center"><font face="FangSong" size="4" color="#0ff">
+            {{ n.xgrq|date:"Y-m-d" }}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+
+
+		</div>
+
+	</div>
+
+
+
+</script>
+
+
+
+{% endblock context %}
